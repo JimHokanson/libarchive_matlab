@@ -1,4 +1,9 @@
 //TODO: Switch on system
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#else
+#endif
+
 #include "mac/archive.h"
 #include "mac/archive_entry.h"
 
@@ -8,13 +13,8 @@
 //  mex -L/usr/local/opt/libarchive/lib -I/usr/local/opt/libarchive/include lib_test.c
 
 /*
- * mex -l"/Users/jim/Documents/repos/matlab_git/libarchive_matlab/libarchive" lib_test.c
- * mex -L"/Users/jim/Documents/repos/matlab_git/libarchive_matlab" -larchive lib_test.c -v
- * mex -larchive.13 lib_test.c -v
- 
- mex -L"/Users/jim/Documents/repos/matlab_git/libarchive_matlab/mex/mac" -larchive.13 lib_test.c -v
-
- lib_test()
+mex -L"/Users/jim/Documents/repos/matlab_git/libarchive_matlab/mex/mac" -larchive.13 lib_test.c
+lib_test()
  *
  */
 
@@ -65,6 +65,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray*prhs[])
     
     while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
         mexPrintf("%s\n",archive_entry_pathname(entry));
+        mexPrintf("Size: %d\n",archive_entry_size(entry));
         archive_read_data_skip(a);  // Note 2
     }
     
